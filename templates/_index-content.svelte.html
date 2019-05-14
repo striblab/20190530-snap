@@ -1,0 +1,48 @@
+
+
+
+<!-- Screen reader announcements -->
+<div aria-live="polite" id="announcer" class="sr-only"></div>
+
+<!-- Skip to main content -->
+<a href="#main-content" class="to-main-content">Skip to main content</a>
+
+<!-- Header -->
+<header class="project-header" role="banner">
+  <div class="container-lg">
+    <h1>{ content.title }</h1>
+  </div>
+</header>
+
+<!-- Main content here -->
+<main id="main-content" class="content" role="main">
+  <div class="container-lg">
+    <p>Main content here.</p>
+
+    <p>
+      Example image:
+      <img src="./assets/images/strib/strib-logo-transparent-307.png" alt="Test image">
+    </p>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer role="contentinfo">
+  <div class="container-lg">
+    <p>Footer content</p>
+  </div>
+</footer>
+
+
+<script>
+  export default {
+    oncreate() {
+      // For content that lives in the CMS directly, we hack
+      // around the share bits by removing it before we load
+      // the component, then re-attach here.
+      if (this.get().attachShare) {
+        this.get().attachShare();
+      }
+    }
+  };
+</script>
