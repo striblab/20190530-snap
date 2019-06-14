@@ -77,23 +77,10 @@ utils.autoEnablePym();
 //   }
 // });
 
-import * as d3 from 'd3';
-// import * as mapboxgl from 'mapbox-gl';
 
 import Chart from './chart.js';
-import ageChart from './age.js';
-import RateChart from './rates.js';
 
-const chart1 = new Chart('#chart');
-const chart2 = new ageChart('#chartAgeB');
-const chart3 = new ageChart('#chartAgeW');
-const chart4 = new RateChart('#arrestChart');
-
-chart1.render();
-chart2.render();
-chart3.render();
-chart4.render();
-
+const chart1 = new Chart('#chartTrend');
 //chart selection parameters
 $.urlParam = function(name) {
     var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
@@ -114,196 +101,150 @@ if (selected == "all") {
     $(".slide").show();
 }
 
+chart1.render();
+
+
 mapboxgl.accessToken = 'pk.eyJ1Ijoic2hhZG93ZmxhcmUiLCJhIjoiS3pwY1JTMCJ9.pTSXx_LFgR3XBpCNNxWPKA';
 
-var dzoom = 11.5;
-var mzoom = 11.5;
+var dzoom = 11;
+var mzoom = 11;
+var centerpoint = [-93.29089, 45.01476];
 
 var map = new mapboxgl.Map({
     container: 'map', // container id
     style: 'mapbox://styles/shadowflare/ciqzo0bu20004bknkbrhrm6wf',
-    // center: [-93.264313, 44.973269],
-    center: [-93.272226, 44.986057],
+    center: [-93.264313, 44.973269], 
+    // center: [-93.29089, 45.01476], 
     zoom: dzoom,
-    minZoom: mzoom
+    minZoom: 10
 });
 
 map.addControl(new mapboxgl.NavigationControl());
 map.scrollZoom.disable();
 map.doubleClickZoom.disable();
 
-                
 map.on('load', function() {
 
-    map.addSource('nb', {
-        type: 'geojson',
-        data: './shapefiles/hex.json'
-      });
-     
-       map.addLayer({
-            'id': 'nb-layer',
-            'interactive': true,
-            'source': 'nb',
-            'layout': {},
-            'type': 'fill',
-                 'paint': {
-                'fill-antialias' : true,
-                'fill-opacity': 0.7,
-                'fill-color': {
-                 "property": "NUMPOINTS",
-                 "stops": [
-                   [0, "rgba(255, 255, 255, 0)"],
-                   [1, "rgba(247, 251, 255, 0.5)"],
-                   [50, "#D1E6E1"],
-                   [75, "#A7E6E3"],
-                   [100, "#67B4C2"],
-                   [500, "#3580A3"],
-                   [1000, "#0D4673"]
-                ]
-             },
-                'fill-outline-color': {
-                 "property": "NUMPOINTS",
-                 "stops": [
-                   [0, "rgba(255, 255, 255, 0)"],
-                   [1, "#888888"],
-                   [20, "#888888"],
-                   [40, "#888888"],
-                   [60, "#888888"],
-                   [80, "#888888"],
-                   [100, "#888888"]
-                ]
-             }
-          }
-        }, 'road-primary');
-
-    map.addSource('nb2', {
-        type: 'geojson',
-        data: './shapefiles/minneapolis_nb.json'
-    });
-
-    map.addLayer({
-        'id': 'nb2-layer',
-        'interactive': true,
-        'source': 'nb2',
-        'layout': {},
-        'type': 'fill',
-        'paint': {
-            'fill-antialias': true,
-            'fill-opacity': 0.7,
-            'fill-color': 'rgba(255, 255, 255, 0.5)',
-            'fill-outline-color': 'rgba(0, 0, 0, 1)'
-        }
-    }, 'road-primary');
-
-    // map.addSource('nb', {
+    // //CITY
+    // map.addSource('mpls', {
     //     type: 'geojson',
     //     data: './shapefiles/minneapolis_nb.json'
-    // });
-
-    // map.addLayer({
-    //     'id': 'nb-layer',
-    //     'interactive': true,
-    //     'source': 'nb',
-    //     'layout': {},
-    //     'type': 'fill',
-    //     'paint': {
-    //         'fill-antialias': true,
-    //         'fill-opacity': 0.7,
-    //         'fill-color': {
-    //             "property": "maindata_rate",
+    //   });
+     
+    //    map.addLayer({
+    //         'id': 'mpls-layer',
+    //         'interactive': true,
+    //         'source': 'mpls',
+    //         'layout': {},
+    //         'type': 'fill',
+    //              'paint': {
+    //             'fill-antialias' : true,
+    //             'fill-opacity': 1,
+    //             'fill-color': 'rgba(255, 255, 255, 0)',
+    //             'fill-outline-color': '#888888'
+    //       }
+    //     }, 'road-primary');
+    
+    // function addGrid() {
+    // //NEIGHBORHOODS
+    //  map.addSource('nb', {
+    //    type: 'geojson',
+    //    data: './shapefiles/hex.json'
+    //  });
+    
+    //   map.addLayer({
+    //        'id': 'nb-layer',
+    //        'interactive': true,
+    //        'source': 'nb',
+    //        'layout': {},
+    //        'type': 'fill',
+    //             'paint': {
+    //            'fill-antialias' : true,
+    //            'fill-opacity': 0.7,
+    //            'fill-color': {
+    //             "property": "NUMPOINTS",
     //             "stops": [
-    //                 [0, "#dddddd"],
-    //                 [1, "#fee0d2"],
-    //                 [4, "#fcbba1"],
-    //                 [6, "#fc9272"],
-    //                 [8, "#fb6a4a"],
-    //                 [10, "#ef3b2c"],
-    //                 [20, "#cb181d"],
-    //                 [30, "#99000d"]
-    //             ]
+    //               [0, "rgba(255, 255, 255, 0)"],
+    //               [1, "rgba(255, 245, 240, 0.5)"],
+    //               [20, "#D1E6E1"],
+    //               [40, "#A7E6E3"],
+    //               [60, "#67B4C2"],
+    //               [80, "#3580A3"],
+    //               [100, "#0D4673"]
+    //            ]
     //         },
-    //         'fill-outline-color': 'rgba(255, 255, 255, 1)'
-    //     }
-    // }, 'road-street');
-
-    // map.addSource('incidents', {
-    //     type: 'geojson',
-    //     data: './shapefiles/incidents.json'
-    // });
-
-    // map.addLayer({
-    //     "id": "incidents-layer-1",
-    //     "type": "circle",
-    //     "source": "incidents",
-    //     "paint": {
-    //         "circle-radius": 1.4,
-    //         "circle-color": '#3580A3',
-    //         "circle-opacity": 1
-    //     },
-    //     "filter": ["==", "AgeGroup", "16_24"]
+    //            'fill-outline-color': {
+    //             "property": "NUMPOINTS",
+    //             "stops": [
+    //               [0, "rgba(255, 255, 255, 0)"],
+    //               [1, "#888888"],
+    //               [20, "#888888"],
+    //               [40, "#888888"],
+    //               [60, "#888888"],
+    //               [80, "#888888"],
+    //               [100, "#888888"]
+    //            ]
+    //         }
+    //      }
+    //    }, 'road-street');
+    // }
+    
+    //     map.addSource('shootings', {
+    //       type: 'geojson',
+    //       data: './shapefiles/incidents.json'
+    //     });
+    
+    
+    // var howManyTimes = 3700;
+    // function loadDots(x) {
+    
+    //     $("#tally").html(d3.format(",")(x));
+    
+        
+    
+    //     map.addLayer({
+    //         "id": "shots-layer-" + x,
+    //         "type": "circle",
+    //         "source": "shootings",
+    //         "paint": {
+    //            "circle-radius": 2,
+    //            "circle-color": '#3580A3',
+    //            "circle-opacity": 0.7
+    //         },
+    //         "filter": ["<", "index", x]
     // }, 'place-neighbourhood');
-
-    // map.addLayer({
-    //     "id": "incidents-layer-2",
-    //     "type": "circle",
-    //     "source": "incidents",
-    //     "paint": {
-    //         "circle-radius": 1.4,
-    //         "circle-color": '#A7E6E3',
-    //         "circle-opacity": 1
-    //     },
-    //     "filter": ["==", "AgeGroup", "25_34"]
-    // }, 'place-neighbourhood');
-
-    // var popup = new mapboxgl.Popup({
-    //     closeButton: false,
-    //     closeOnClick: false
-    // });
-
-    // map.on('mousemove', function(e) {
-    //     var features = map.queryRenderedFeatures(e.point, { layers: ['shootings-layer','shootings-layer2'] });
-    //     // Change the cursor style as a UI indicator.
-    //     map.getCanvas().style.cursor = (features.length) ? 'pointer' : '';
-
-    //     if (!features.length) {
-    //         popup.remove();
-    //         return;
-    //     }
-
-    //     var feature = features[0];
-
-    //     // Populate the popup and set its coordinates
-    //     // based on the feature found.
-    //     popup.setLngLat(e.lngLat)
-    //         .setHTML("<div>" + feature.properties.FirstName + " " + feature.properties.LastName + "</div><div>died in " + feature.properties.year + "</div><div>" + feature.properties.WeaponCategory + "</div>")
-    //         .addTo(map);
-    // });
+    
+    // }
 
 });
 
 $(document).ready(function() {
     if ($("#wrapper").width() < 600) {
         map.flyTo({
-            center: [-93.272226, 44.986057],
-            zoom: mzoom,
+          center: [-93.264313, 44.973269], 
+          zoom: mzoom,
+          minZoom: 10
         });
     } else {
         map.flyTo({
-            center: [-93.272226, 44.986057],
-            zoom: dzoom,
+          center: [-93.264313, 44.973269],  
+          zoom: dzoom,
+          minZoom: 10
         });
     }
     $(window).resize(function() {
         if ($("#wrapper").width() < 600) {
             map.flyTo({
-                center: [-93.272226, 44.986057],
-                zoom: mzoom,
+              center: [-93.264313, 44.973269],  
+              zoom: mzoom,
+              minZoom: 10
             });
         } else {
             map.flyTo({
-                center: [-93.272226, 44.986057],
-                zoom: dzoom,
+              center: [-93.264313, 44.973269],  
+              zoom: dzoom,
+              minZoom: 10
             });
         }
     });
-});
+  });
