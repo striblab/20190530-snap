@@ -106,9 +106,9 @@ chart1.render();
 
 mapboxgl.accessToken = 'pk.eyJ1Ijoic2hhZG93ZmxhcmUiLCJhIjoiS3pwY1JTMCJ9.pTSXx_LFgR3XBpCNNxWPKA';
 
-var dzoom = 11;
-var mzoom = 11;
-var centerpoint = [-93.29089, 45.01476];
+var dzoom = 8.7;
+var mzoom = 8.7;
+var centerpoint = [-93.201362, 44.982665];
 
 var map = new mapboxgl.Map({
     container: 'map', // container id
@@ -116,7 +116,7 @@ var map = new mapboxgl.Map({
     center: [-93.264313, 44.973269], 
     // center: [-93.29089, 45.01476], 
     zoom: dzoom,
-    minZoom: 10
+    minZoom: mzoom
 });
 
 map.addControl(new mapboxgl.NavigationControl());
@@ -125,26 +125,45 @@ map.doubleClickZoom.disable();
 
 map.on('load', function() {
 
-    // //CITY
-    // map.addSource('mpls', {
-    //     type: 'geojson',
-    //     data: './shapefiles/minneapolis_nb.json'
-    //   });
+    //CITIES
+    map.addSource('mpls', {
+        type: 'geojson',
+        data: './shapefiles/minneapolis.geojson'
+      });
      
-    //    map.addLayer({
-    //         'id': 'mpls-layer',
-    //         'interactive': true,
-    //         'source': 'mpls',
-    //         'layout': {},
-    //         'type': 'fill',
-    //              'paint': {
-    //             'fill-antialias' : true,
-    //             'fill-opacity': 1,
-    //             'fill-color': 'rgba(255, 255, 255, 0)',
-    //             'fill-outline-color': '#888888'
-    //       }
-    //     }, 'road-primary');
+       map.addLayer({
+            'id': 'mpls-layer',
+            'interactive': true,
+            'source': 'mpls',
+            'layout': {},
+            'type': 'fill',
+                 'paint': {
+                'fill-antialias' : true,
+                'fill-opacity': 1,
+                'fill-color': 'rgba(255, 255, 255, 0)',
+                'fill-outline-color': '#888888'
+          }
+        }, 'road-primary');
     
+        map.addSource('stpaul', {
+            type: 'geojson',
+            data: './shapefiles/stpaul.geojson'
+          });
+         
+           map.addLayer({
+                'id': 'stpaul-layer',
+                'interactive': true,
+                'source': 'stpaul',
+                'layout': {},
+                'type': 'fill',
+                     'paint': {
+                    'fill-antialias' : true,
+                    'fill-opacity': 1,
+                    'fill-color': 'rgba(255, 255, 255, 0)',
+                    'fill-outline-color': '#888888'
+              }
+            }, 'road-primary');
+
     // function addGrid() {
     // //NEIGHBORHOODS
     //  map.addSource('nb', {
@@ -218,33 +237,33 @@ map.on('load', function() {
 
 });
 
-$(document).ready(function() {
-    if ($("#wrapper").width() < 600) {
-        map.flyTo({
-          center: [-93.264313, 44.973269], 
-          zoom: mzoom,
-          minZoom: 10
-        });
-    } else {
-        map.flyTo({
-          center: [-93.264313, 44.973269],  
-          zoom: dzoom,
-          minZoom: 10
-        });
-    }
-    $(window).resize(function() {
-        if ($("#wrapper").width() < 600) {
-            map.flyTo({
-              center: [-93.264313, 44.973269],  
-              zoom: mzoom,
-              minZoom: 10
-            });
-        } else {
-            map.flyTo({
-              center: [-93.264313, 44.973269],  
-              zoom: dzoom,
-              minZoom: 10
-            });
-        }
-    });
-  });
+// $(document).ready(function() {
+//     if ($("#wrapper").width() < 600) {
+//         map.flyTo({
+//           center: [-93.264313, 44.973269], 
+//           zoom: mzoom,
+//           minZoom: 10
+//         });
+//     } else {
+//         map.flyTo({
+//           center: [-93.264313, 44.973269],  
+//           zoom: dzoom,
+//           minZoom: 10
+//         });
+//     }
+//     $(window).resize(function() {
+//         if ($("#wrapper").width() < 600) {
+//             map.flyTo({
+//               center: [-93.264313, 44.973269],  
+//               zoom: mzoom,
+//               minZoom: 10
+//             });
+//         } else {
+//             map.flyTo({
+//               center: [-93.264313, 44.973269],  
+//               zoom: dzoom,
+//               minZoom: 10
+//             });
+//         }
+//     });
+//   });
